@@ -10,6 +10,31 @@ Kotlin Multiplatform Logs library. Supporting file and platform specific debug l
 
 ## Installation
 
+KMPLogs is available on Maven Central. In your root project `build.gradle.kts` file (or `settings.gradle` file) add `mavenCentral()` to repositories.
+
+```kotlin
+repositories { 
+  mavenCentral()
+}
+```
+
+Then in your modules add kmplogs-api dependency. Latest version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.sd155/kmplogs-api?color=blue)](https://search.maven.org/search?q=g:io.github.sd155+kmplogs).
+```kotlin
+sourceSets {
+  commonMain.dependencies {
+    implementation("io.github.sd155:kmplogs-api:<version>") //Lightweight Logger API
+  }
+}
+```
+And in your application layer module add kmplogs-core dependency. Latest version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.sd155/kmplogs-core?color=blue)](https://search.maven.org/search?q=g:io.github.sd155+kmplogs).
+```kotlin
+sourceSets {
+  androidMain.dependencies {
+    implementation("io.github.sd155:kmplogs-core:<version>") //Logs implementation for Android
+  }
+}
+```
+
 ## Setup
 
 <details>
