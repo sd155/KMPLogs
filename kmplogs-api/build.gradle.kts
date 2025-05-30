@@ -18,7 +18,7 @@ kotlin {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
-    coordinates(group.toString(), "library", version.toString())
+    coordinates(group.toString(), "kmplogs-api", version.toString())
     
     pom {
         name = libs.versions.library.name.get()

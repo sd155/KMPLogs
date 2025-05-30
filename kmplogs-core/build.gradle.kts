@@ -64,7 +64,7 @@ android {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
-    coordinates(group.toString(), "library", version.toString())
+    coordinates(group.toString(), "kmplogs-core", version.toString())
     pom {
         name = libs.versions.library.name.get()
         description = libs.versions.library.description.get()
