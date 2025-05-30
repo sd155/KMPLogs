@@ -1,4 +1,4 @@
-package ru.smartdroid.logs
+package ru.neurospb.logs
 
 import android.content.Context
 import android.os.storage.StorageManager

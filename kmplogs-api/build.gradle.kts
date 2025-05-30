@@ -19,6 +19,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
     coordinates(group.toString(), "library", version.toString())
+    
     pom {
         name = libs.versions.library.name.get()
         description = libs.versions.library.description.get()

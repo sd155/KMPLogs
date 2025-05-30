@@ -1,4 +1,4 @@
-package ru.smartdroid.logs
+package ru.neurospb.logs
 
 import android.util.Log
 import com.google.gson.JsonObject

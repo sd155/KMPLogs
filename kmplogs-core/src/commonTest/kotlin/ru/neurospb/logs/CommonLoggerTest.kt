@@ -1,4 +1,4 @@
-package ru.smartdroid.logs
+package ru.neurospb.logs
 
 import com.google.gson.Gson
 import kotlin.test.*

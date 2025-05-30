@@ -1,7 +1,7 @@
-package ru.smartdroid.logs
+package ru.neurospb.logs
 
 import com.google.gson.Gson
-import ru.smartdroid.logs.api.Logger
+import ru.neurospb.logs.api.Logger
 
 internal class AndroidLogger(
     override val sourceTag: String

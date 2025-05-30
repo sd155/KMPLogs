@@ -1,4 +1,4 @@
-package ru.smartdroid.logs.api
+package ru.neurospb.logs.api
 
 interface Logger {
     /**

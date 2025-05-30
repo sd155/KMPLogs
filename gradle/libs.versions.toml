@@ -16,7 +16,7 @@ androidx-security-crypto = "1.0.0"
 androidx-test-junit = "1.2.1"
 library-name = "KMPLogs"
 library-description = "Kotlin Multiplatform Logs Library"
-library-namespace = "ru.smartdroid.logs"
+library-namespace = "ru.neurospb.logs"
 library-inception = "2025"
 library-git = "https://gitverse.ru/sd155/KMPLogs"
 library-version-name = "0.0.1"
@@ -89,3 +89,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinNativeCocoaPods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version = "0.29.0" }
+

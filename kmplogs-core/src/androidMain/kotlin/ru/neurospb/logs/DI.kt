@@ -1,7 +1,7 @@
-package ru.smartdroid.logs
+package ru.neurospb.logs
 
 import android.content.Context
-import ru.smartdroid.logs.api.Logger
+import ru.neurospb.logs.api.Logger
 
 /**
  * Configuration class for Android logging functionality.
