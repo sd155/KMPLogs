@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
-group = libs.versions.library.namespace.get()
+group = libs.versions.library.group.get()
 version = libs.versions.library.version.name.get()
 
 private val _java = libs.versions.java.get()

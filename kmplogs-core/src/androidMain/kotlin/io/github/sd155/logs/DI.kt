@@ -1,7 +1,7 @@
-package ru.neurospb.logs
+package io.github.sd155.logs
 
 import android.content.Context
-import ru.neurospb.logs.api.Logger
+import io.github.sd155.logs.api.Logger
 
 /**
  * Configuration class for Android logging functionality.

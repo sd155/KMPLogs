@@ -1,4 +1,4 @@
-package ru.neurospb.logs
+package io.github.sd155.logs
 
 import com.google.gson.Gson
 import kotlin.test.*

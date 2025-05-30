@@ -1,4 +1,4 @@
-package ru.neurospb.logs.api
+package io.github.sd155.logs.api
 
 interface Logger {
     /**

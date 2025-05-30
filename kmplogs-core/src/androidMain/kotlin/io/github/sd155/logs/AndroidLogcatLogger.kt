@@ -1,4 +1,4 @@
-package ru.neurospb.logs
+package io.github.sd155.logs
 
 import android.util.Log
 import com.google.gson.JsonObject
