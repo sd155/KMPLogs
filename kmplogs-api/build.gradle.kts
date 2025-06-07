@@ -1,8 +1,10 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.vanniktech.mavenPublish)
+    alias(libs.plugins.vanniktechMavenPublish)
 }
 
 group = libs.versions.library.group.get()
@@ -16,6 +18,11 @@ kotlin {
 }
 
 mavenPublishing {
+    configure(KotlinMultiplatform(
+        javadocJar = JavadocJar.Empty(),
+        sourcesJar = true,
+        androidVariantsToPublish = listOf("release")
+    ))
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
     coordinates(group.toString(), "kmplogs-api", version.toString())

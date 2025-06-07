@@ -1,10 +1,11 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.vanniktech.mavenPublish)
+    alias(libs.plugins.vanniktechMavenPublish)
 }
 
 group = libs.versions.library.group.get()
@@ -18,7 +19,7 @@ kotlin {
     jvmToolchain(_java.toInt())
 
     androidTarget {
-        publishLibraryVariants("release")
+//        publishLibraryVariants("release")
         compilerOptions {
             jvmTarget.set(_jvmTarget)
         }
@@ -62,6 +63,11 @@ android {
 }
 
 mavenPublishing {
+    configure(AndroidSingleVariantLibrary(
+        variant = "release",
+        sourcesJar = false,
+        publishJavadocJar = false
+    ))
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
     coordinates(group.toString(), "kmplogs-core", version.toString())
