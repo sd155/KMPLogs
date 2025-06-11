@@ -6,6 +6,13 @@ import io.github.sd155.logs.api.Logger
 /**
  * Configuration class for Android logging functionality.
  * Provides methods to enable and disable different logging mechanisms (file and logcat).
+ *
+ * Default Configuration
+ * - TRACE level is disabled by default
+ * - DEBUG level is disabled by default
+ * - INFO, WARNING, ERROR, and FATAL levels are always enabled
+ * - File logging is disabled by default
+ * - Logcat logging is disabled by default
  */
 class AndroidLoggerConfigurator {
 
@@ -50,6 +57,46 @@ class AndroidLoggerConfigurator {
      */
     fun disableLogcatLogging(): AndroidLoggerConfigurator =
         AndroidLog.disableLogcatLogging().let { this }
+
+    /**
+     * Enables TRACE level logging.
+     * TRACE is the most detailed logging level, typically used for:
+     * - Detailed method entry/exit logging
+     * - Variable state tracking
+     * - Detailed flow control information
+     * - Performance measurements
+     *
+     * This level is usually disabled in production environments.
+     */
+    fun enableTraceLogging(): Unit =
+        AndroidLog.enableLevel(LogType.TRACE)
+
+    /**
+     * Disables TRACE level logging.
+     * After calling this method, all trace logs will be ignored.
+     */
+    fun disableTraceLogging(): Unit =
+        AndroidLog.disableLevel(LogType.TRACE)
+
+    /**
+     * Enables DEBUG level logging.
+     * DEBUG level is used for detailed information useful during development and troubleshooting:
+     * - Function results
+     * - State changes
+     * - Configuration values
+     * - Detailed operation progress
+     *
+     * This level is typically enabled in development and testing environments.
+     */
+    fun enableDebugLogging(): Unit =
+        AndroidLog.enableLevel(LogType.DEBUG)
+
+    /**
+     * Disables DEBUG level logging.
+     * After calling this method, all debug logs will be ignored.
+     */
+    fun disableDebugLogging(): Unit =
+        AndroidLog.disableLevel(LogType.DEBUG)
 }
 
 /**

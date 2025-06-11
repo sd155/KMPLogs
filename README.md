@@ -5,8 +5,11 @@ Kotlin Multiplatform Logs library. Supporting file and platform specific debug l
 
 ## Features
 
+- JSON-formatted log entries
 - Android logcat logging
 - Android file logging [details](./kmplogs-core/README.md)
+- Granular control over logging levels (TRACE and DEBUG)
+- Configurable Android log storage (internal/external)
 
 ## Installation
 
@@ -63,7 +66,14 @@ AndroidLoggerConfigurator()
     .enableLogcatLogging()    
     // Disable logcat logging.
     .disableLogcatLogging()
-
+    // Enable TRACE level logging (most detailed).
+    .enableTraceLogging()
+    // Disable TRACE level logging.
+    .disableTraceLogging()
+    // Enable DEBUG level logging.
+    .enableDebugLogging()
+    // Disable DEBUG level logging.
+    .disableDebugLogging()
 ```
 
 To log something - create logger instances and provide them for your components in your favorite DI pattern.
@@ -88,21 +98,54 @@ logger.error(event = "Some usecase failure.", e = e)
 // You may put some optional objects for diagnostic reason.
 logger.debug(event = "Some debug point.", diagnostics = listOf(httpRequest, httpResponse))
 ```
+### Default Configuration
+- TRACE level is disabled by default
+- DEBUG level is disabled by default
+- INFO, WARNING, ERROR, and FATAL levels are always enabled
+- File logging is disabled by default
+- Logcat logging is disabled by default
+
+**Note:** To enable any logging, you must explicitly configure it using `AndroidLoggerConfigurator`.
 
 ### Best Practices
 1. Use appropriate log levels:
-   - TRACE: Detailed debugging
-   - DEBUG: General debugging
-   - INFO: Normal operations
-   - WARNING: Unexpected but handled situations
-   - ERROR: Errors that need attention
-   - FATAL: Critical errors
+   - TRACE: Detailed debugging (method entry/exit, variable state, flow control)
+   - DEBUG: General debugging (function results, state changes, configuration)
+   - INFO: Normal operations (startup, shutdown, major state changes)
+   - WARNING: Unexpected but handled situations (deprecated API, retries)
+   - ERROR: Errors that need attention (failed operations, connection issues)
+   - FATAL: Critical errors (unrecoverable system errors, security violations)
 2. Include relevant context in diagnostics
 3. Use meaningful source tags
 4. Enable stack traces for errors
 5. Consider storage implications when choosing internal vs external storage
+6. Control TRACE and DEBUG levels based on environment:
+   - Enable in development for detailed debugging
+   - Disable in production to reduce overhead
+   - Consider enabling temporarily for troubleshooting
 
 ### Security Considerations
 1. Internal storage is more secure but less accessible
 2. External storage is more accessible but less secure
 3. Consider encrypting or cut away sensitive log data, especial sensitive user data.
+
+## Log record scheme
+
+Each log entry is stored as a JSON object with the following structure:
+
+```json
+{
+  "time": "ISO-8601 timestamp",
+  "type": "TRACE|DEBUG|INFO|WARNING|ERROR|FATAL",
+  "source": "component identifier",
+  "thread": "thread name",
+  "event": "event/message",
+  "error": {
+    "message": "error message",
+    "stacktrace": "stack trace"
+  },
+  "diagnostics": {
+      "class name": { serialized to JSON instance of class }
+  }
+}
+```

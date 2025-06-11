@@ -3,12 +3,15 @@ package io.github.sd155.logs
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
 internal object AndroidLog {
     internal val gson by lazy { Gson() }
     private val _fileLogger = AtomicReference<AndroidFileLogger?>(null)
     private val _logcatLogger = AtomicReference<AndroidLogcatLogger?>(null)
+    private val _traceLevelEnabled = AtomicBoolean(false)
+    private val _debugLevelEnabled = AtomicBoolean(false)
 
     internal fun enableFileLogging(
         appContext: Context,
@@ -39,7 +42,23 @@ internal object AndroidLog {
         _logcatLogger.set(null)
     }
 
+    internal fun enableLevel(type: LogType) =
+        when (type) {
+            LogType.TRACE -> _traceLevelEnabled.set(true)
+            LogType.DEBUG -> _debugLevelEnabled.set(true)
+            else -> {}
+        }
+
+    internal fun disableLevel(type: LogType) =
+        when (type) {
+            LogType.TRACE -> _traceLevelEnabled.set(false)
+            LogType.DEBUG -> _debugLevelEnabled.set(false)
+            else -> {}
+        }
+
     internal fun log(record: JsonObject, sourceTag: String, type: LogType) {
+        if (type == LogType.TRACE && !_traceLevelEnabled.get()) return
+        if (type == LogType.DEBUG && !_debugLevelEnabled.get()) return
         _fileLogger.get()?.log(record.toString())
         _logcatLogger.get()?.log(type, record, sourceTag)
     }
