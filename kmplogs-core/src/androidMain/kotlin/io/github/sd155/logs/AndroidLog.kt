@@ -12,6 +12,7 @@ internal object AndroidLog {
     private val _logcatLogger = AtomicReference<AndroidLogcatLogger?>(null)
     private val _traceLevelEnabled = AtomicBoolean(false)
     private val _debugLevelEnabled = AtomicBoolean(false)
+    private val _androidDefaultUncaughtExceptionHandler by lazy { Thread.getDefaultUncaughtExceptionHandler() }
 
     internal fun enableFileLogging(
         appContext: Context,
@@ -28,18 +29,40 @@ internal object AndroidLog {
                 thresholdMb = logFileSizeMb,
             ).apply { open() }
         )
+        enableCrashHandler()
     }
 
     internal fun disableFileLogging() {
         _fileLogger.getAndSet(null)?.close()
+        disableCrashHandlerIfNoLoggers()
     }
 
     internal fun enableLogcatLogging() {
         _logcatLogger.compareAndSet(null, AndroidLogcatLogger())
+        enableCrashHandler()
     }
 
     internal fun disableLogcatLogging() {
         _logcatLogger.set(null)
+        disableCrashHandlerIfNoLoggers()
+    }
+
+    private fun enableCrashHandler() {
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            try {
+                AndroidLogger(sourceTag = "CRASH")
+                    .fatal(event = "Application crashed", e = throwable)
+            }
+            catch (_: Exception) { /*ignore failure, as system is already crashed*/ }
+            finally {
+                _androidDefaultUncaughtExceptionHandler?.uncaughtException(thread, throwable)
+            }
+        }
+    }
+
+    private fun disableCrashHandlerIfNoLoggers() {
+        if (_logcatLogger.get() == null && _fileLogger.get() == null)
+            Thread.setDefaultUncaughtExceptionHandler(_androidDefaultUncaughtExceptionHandler)
     }
 
     internal fun enableLevel(type: LogType) =

@@ -10,6 +10,7 @@ Kotlin Multiplatform Logs library. Supporting file and platform specific debug l
 - Android file logging [details](./kmplogs-core/README.md)
 - Granular control over logging levels (TRACE and DEBUG)
 - Configurable Android log storage (internal/external)
+- Android automatic crash logging
 
 ## Installation
 
@@ -145,7 +146,7 @@ Each log entry is stored as a JSON object with the following structure:
     "stacktrace": "stack trace"
   },
   "diagnostics": {
-      "class name": { serialized to JSON instance of class }
+    "class name": { serialized to JSON instance of class }
   }
 }
 ```
