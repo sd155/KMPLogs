@@ -3,6 +3,7 @@ package io.github.sd155.logs
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import java.lang.Thread.UncaughtExceptionHandler
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
@@ -12,7 +13,17 @@ internal object AndroidLog {
     private val _logcatLogger = AtomicReference<AndroidLogcatLogger?>(null)
     private val _traceLevelEnabled = AtomicBoolean(false)
     private val _debugLevelEnabled = AtomicBoolean(false)
-    private val _androidDefaultUncaughtExceptionHandler by lazy { Thread.getDefaultUncaughtExceptionHandler() }
+    private val _androidDefaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+    private val _uncaughtExceptionHandler = UncaughtExceptionHandler { thread, throwable ->
+        try {
+            AndroidLogger(sourceTag = "CRASH")
+                .fatal(event = "Application crashed", e = throwable)
+        }
+        catch (_: Exception) { /*ignore failure, as system is already crashed*/ }
+        finally {
+            _androidDefaultUncaughtExceptionHandler?.uncaughtException(thread, throwable)
+        }
+    }
 
     internal fun enableFileLogging(
         appContext: Context,
@@ -47,18 +58,8 @@ internal object AndroidLog {
         disableCrashHandlerIfNoLoggers()
     }
 
-    private fun enableCrashHandler() {
-        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
-            try {
-                AndroidLogger(sourceTag = "CRASH")
-                    .fatal(event = "Application crashed", e = throwable)
-            }
-            catch (_: Exception) { /*ignore failure, as system is already crashed*/ }
-            finally {
-                _androidDefaultUncaughtExceptionHandler?.uncaughtException(thread, throwable)
-            }
-        }
-    }
+    private fun enableCrashHandler() =
+        Thread.setDefaultUncaughtExceptionHandler(_uncaughtExceptionHandler)
 
     private fun disableCrashHandlerIfNoLoggers() {
         if (_logcatLogger.get() == null && _fileLogger.get() == null)
