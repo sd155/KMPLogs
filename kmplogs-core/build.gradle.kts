@@ -19,22 +19,16 @@ kotlin {
     jvmToolchain(_java.toInt())
 
     androidTarget {
-//        publishLibraryVariants("release")
         compilerOptions {
             jvmTarget.set(_jvmTarget)
         }
-    }    
-//    iosX64()
-//    iosArm64()
-//    iosSimulatorArm64()
-//    linuxX64()
-//    jvm()
+    }
     
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(projects.kmplogsApi)
-                implementation(libs.gson)
+                implementation(libs.google.gson)
             }
         }
         val commonTest by getting {
